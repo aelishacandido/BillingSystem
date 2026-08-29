@@ -29,5 +29,10 @@ namespace BillingSystem
         {
 
         }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
