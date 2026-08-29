@@ -47,10 +47,10 @@
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Bookman Old Style", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.Font = new Font("Microsoft Sans Serif", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.Location = new Point(15, 18);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(182, 28);
+            lblTitle.Size = new Size(136, 24);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Customer List";
             // 
@@ -142,7 +142,7 @@
             // 
             txtSearch.Location = new Point(481, 24);
             txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(219, 25);
+            txtSearch.Size = new Size(219, 21);
             txtSearch.TabIndex = 5;
             txtSearch.TextChanged += txtSearch_TextChanged;
             // 
@@ -158,7 +158,7 @@
             // 
             // CustomerListForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 17F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(782, 385);
             Controls.Add(btnSearch);
@@ -168,10 +168,10 @@
             Controls.Add(btnAdd);
             Controls.Add(dataGridView1);
             Controls.Add(lblTitle);
-            Font = new Font("Baskerville Old Face", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "CustomerListForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Billing System - Customer List";
+            Text = "Billing System v 1.0 - Customer List (J.M.D)";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
