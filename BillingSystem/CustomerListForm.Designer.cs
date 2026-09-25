@@ -50,7 +50,7 @@
             lblTitle.Font = new Font("Microsoft Sans Serif", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.Location = new Point(15, 18);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(136, 24);
+            lblTitle.Size = new Size(173, 29);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Customer List";
             // 
@@ -68,9 +68,11 @@
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(755, 193);
             dataGridView1.TabIndex = 1;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // CustomerID
             // 
+            CustomerID.DataPropertyName = "CustomerID";
             CustomerID.HeaderText = "ID";
             CustomerID.MinimumWidth = 6;
             CustomerID.Name = "CustomerID";
@@ -78,6 +80,7 @@
             // 
             // FullName
             // 
+            FullName.DataPropertyName = "FullName";
             FullName.HeaderText = "Full Name";
             FullName.MinimumWidth = 6;
             FullName.Name = "FullName";
@@ -85,6 +88,7 @@
             // 
             // Address
             // 
+            Address.DataPropertyName = "Address";
             Address.HeaderText = "Address";
             Address.MinimumWidth = 6;
             Address.Name = "Address";
@@ -92,6 +96,7 @@
             // 
             // ContactNumber
             // 
+            ContactNumber.DataPropertyName = "ContactNumber";
             ContactNumber.HeaderText = "Contact No.";
             ContactNumber.MinimumWidth = 6;
             ContactNumber.Name = "ContactNumber";
@@ -99,6 +104,7 @@
             // 
             // Email
             // 
+            Email.DataPropertyName = "Email";
             Email.HeaderText = "Email";
             Email.MinimumWidth = 6;
             Email.Name = "Email";
@@ -106,6 +112,7 @@
             // 
             // Balance
             // 
+            Balance.DataPropertyName = "Balance";
             Balance.HeaderText = "Balance";
             Balance.MinimumWidth = 6;
             Balance.Name = "Balance";
@@ -119,6 +126,7 @@
             btnAdd.TabIndex = 2;
             btnAdd.Text = "Add Customer";
             btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // btnDelete
             // 
@@ -142,7 +150,7 @@
             // 
             txtSearch.Location = new Point(481, 24);
             txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(219, 21);
+            txtSearch.Size = new Size(219, 24);
             txtSearch.TabIndex = 5;
             txtSearch.TextChanged += txtSearch_TextChanged;
             // 
@@ -155,10 +163,11 @@
             btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
+            btnSearch.KeyPress += txtSearch_KeyPress;
             // 
             // CustomerListForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(782, 385);
             Controls.Add(btnSearch);
@@ -172,6 +181,7 @@
             Name = "CustomerListForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Billing System v 1.0 - Customer List (J.M.D)";
+            Load += CustomerListForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -181,16 +191,16 @@
 
         private Label lblTitle;
         private DataGridView dataGridView1;
+        private Button btnAdd;
+        private Button btnDelete;
+        private Button btnLogout;
+        private TextBox txtSearch;
+        private Button btnSearch;
         private DataGridViewTextBoxColumn CustomerID;
         private DataGridViewTextBoxColumn FullName;
         private DataGridViewTextBoxColumn Address;
         private DataGridViewTextBoxColumn ContactNumber;
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Balance;
-        private Button btnAdd;
-        private Button btnDelete;
-        private Button btnLogout;
-        private TextBox txtSearch;
-        private Button btnSearch;
     }
 }
