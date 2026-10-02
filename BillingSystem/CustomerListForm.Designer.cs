@@ -69,6 +69,8 @@
             dataGridView1.Size = new Size(755, 193);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellDoubleClick += dgvCustomers_CellDoubleClick;
+            dataGridView1.SelectionChanged += dgvCustomers_SelectionChanged;
             // 
             // CustomerID
             // 
@@ -136,6 +138,7 @@
             btnDelete.TabIndex = 3;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnLogout
             // 
