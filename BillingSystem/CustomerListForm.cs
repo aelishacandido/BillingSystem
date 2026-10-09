@@ -8,6 +8,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using ClosedXML.Excel;
+using System.IO;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
 
 namespace BillingSystem
 {
@@ -258,7 +262,7 @@ namespace BillingSystem
                 return;
             }
             // Step 2: Confirm before deleting — this cannot be undone 
-            DialogResult confirm = MessageBox.Show("Are you sure you want to delete this customer?\n" + 
+            DialogResult confirm = MessageBox.Show("Are you sure you want to delete this customer?\n" +
                                                    "All billing records for this customer will also be deleted.",
                                                    "Confirm Delete",
                                                    MessageBoxButtons.YesNo,
@@ -270,6 +274,160 @@ namespace BillingSystem
                 DeleteCustomer(_selectedCustomerId);
             }
             // If the user clicked No, do nothing — the record is preserved 
+        }
+
+        private void btnAnalytics_Click(object sender, EventArgs e)
+        {
+            frmAnalytics analytics = new frmAnalytics();
+            analytics.ShowDialog();
+        }
+
+        private void btnExportExcel_Click(object sender, EventArgs e)
+        {
+            // Make sure there is something to export 
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("There are no records to export.", "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Let the user choose where to save the file 
+            using (SaveFileDialog saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Filter = "Excel Workbook (*.xlsx)|*.xlsx";
+                saveDialog.FileName = "CustomerList.xlsx";
+
+                if (saveDialog.ShowDialog() != DialogResult.OK) return;
+
+                try
+                {
+                    using (var workbook = new XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add("Customers");
+
+                        // Write column headers in row 1 
+                        for (int col = 0; col < dataGridView1.Columns.Count; col++)
+                        {
+                            worksheet.Cell(1, col + 1).Value = dataGridView1.Columns[col].HeaderText;
+                            worksheet.Cell(1, col + 1).Style.Font.Bold = true;
+                        }
+
+                        // Write each data row starting from row 2 
+                        for (int row = 0; row < dataGridView1.Rows.Count; row++)
+                        {
+                            for (int col = 0; col < dataGridView1.Columns.Count; col++)
+                            {
+                                var cellValue = dataGridView1.Rows[row].Cells[col].Value;
+                                worksheet.Cell(row + 2, col + 1).Value = cellValue?.ToString() ?? "";
+                            }
+                        }
+
+                        // Auto-adjust column widths to fit the content 
+                        worksheet.Columns().AdjustToContents();
+
+                        workbook.SaveAs(saveDialog.FileName);
+                    }
+
+                    MessageBox.Show("Customer list exported successfully to Excel.", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error exporting to Excel:\n{ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        private void btnExportPdf_Click(object sender, EventArgs e)
+        {
+            // Make sure there is something to export 
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("There are no records to export.", "Export to PDF", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SaveFileDialog saveDialog = new SaveFileDialog())
+            {
+                saveDialog.Filter = "PDF Document (*.pdf)|*.pdf";
+                saveDialog.FileName = "CustomerList.pdf";
+
+                if (saveDialog.ShowDialog() != DialogResult.OK) return;
+
+                try
+                {
+                    using (PdfDocument document = new PdfDocument())
+                    {
+                        // Create a new page set to Landscape orientation 
+                        PdfPage page = document.AddPage();
+                        page.Orientation = PdfSharp.PageOrientation.Landscape;
+
+                        XGraphics gfx = XGraphics.FromPdfPage(page);
+                        {
+                            XFont titleFont = new XFont("Arial", 16, XFontStyleEx.Bold);
+                            XFont headerFont = new XFont("Arial", 10, XFontStyleEx.Bold);
+                            XFont cellFont = new XFont("Arial", 9, XFontStyleEx.Regular);
+
+                            // Title 
+                            gfx.DrawString("Customer List Report", titleFont, XBrushes.Black,
+                                new XRect(0, 20, page.Width.Point, 30), XStringFormats.TopCenter);
+
+                            int columnCount = dataGridView1.Columns.Count;
+                            double margin = 30;
+                            double tableWidth = page.Width.Point - (margin * 2);
+                            double colWidth = tableWidth / columnCount;
+                            double rowHeight = 22;
+                            double y = 60;
+
+                            // Draw column headers 
+                            double x = margin;
+                            for (int col = 0; col < columnCount; col++)
+                            {
+                                gfx.DrawString(dataGridView1.Columns[col].HeaderText, headerFont,
+                                    XBrushes.Black, new XRect(x, y, colWidth, rowHeight),
+                                    XStringFormats.CenterLeft);
+                                x += colWidth;
+                            }
+
+                            y += rowHeight;
+                            gfx.DrawLine(XPens.Black, margin, y, page.Width.Point - margin, y);
+
+                            // Draw each data row 
+                            foreach (DataGridViewRow row in dataGridView1.Rows)
+                            {
+                                x = margin;
+                                y += rowHeight;
+
+                                // Start a new page if we run out of vertical space 
+                                if (y > page.Height.Point - margin)
+                                {
+                                    page = document.AddPage();
+                                    page.Orientation = PdfSharp.PageOrientation.Landscape;
+                                    gfx.Dispose();
+                                    gfx = XGraphics.FromPdfPage(page);
+                                    y = 40;
+                                }
+
+                                for (int col = 0; col < columnCount; col++)
+                                {
+                                    string text = row.Cells[col].Value?.ToString() ?? "";
+                                    gfx.DrawString(text, cellFont, XBrushes.Black,
+                                        new XRect(x, y, colWidth, rowHeight),
+                                        XStringFormats.CenterLeft);
+                                    x += colWidth;
+                                }
+                            }
+                        }
+
+                        gfx.Dispose();   // finish drawing before saving 
+                        document.Save(saveDialog.FileName);
+                    }
+
+                    MessageBox.Show("Customer list exported successfully to PDF.", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error exporting to PDF:\n{ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

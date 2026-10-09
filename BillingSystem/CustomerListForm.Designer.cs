@@ -41,16 +41,19 @@
             btnLogout = new Button();
             txtSearch = new TextBox();
             btnSearch = new Button();
+            AnalyticsBtn = new Button();
+            btnExportExcel = new Button();
+            btnExportPdf = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Microsoft Sans Serif", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.Font = new Font("Bookman Old Style", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.Location = new Point(15, 18);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(173, 29);
+            lblTitle.Size = new Size(182, 28);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Customer List";
             // 
@@ -122,6 +125,7 @@
             // 
             // btnAdd
             // 
+            btnAdd.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAdd.Location = new Point(200, 295);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(122, 29);
@@ -132,6 +136,7 @@
             // 
             // btnDelete
             // 
+            btnDelete.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnDelete.Location = new Point(456, 295);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(121, 29);
@@ -142,6 +147,7 @@
             // 
             // btnLogout
             // 
+            btnLogout.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLogout.Location = new Point(328, 295);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(122, 29);
@@ -151,7 +157,7 @@
             // 
             // txtSearch
             // 
-            txtSearch.Location = new Point(481, 24);
+            txtSearch.Location = new Point(477, 24);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(219, 24);
             txtSearch.TabIndex = 5;
@@ -159,20 +165,57 @@
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(710, 22);
+            btnSearch.Font = new Font("Baskerville Old Face", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnSearch.Location = new Point(704, 22);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(60, 29);
+            btnSearch.Size = new Size(66, 29);
             btnSearch.TabIndex = 7;
             btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
             btnSearch.KeyPress += txtSearch_KeyPress;
             // 
+            // AnalyticsBtn
+            // 
+            AnalyticsBtn.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            AnalyticsBtn.Location = new Point(104, 330);
+            AnalyticsBtn.Name = "AnalyticsBtn";
+            AnalyticsBtn.Size = new Size(166, 32);
+            AnalyticsBtn.TabIndex = 8;
+            AnalyticsBtn.Text = "Analytics";
+            AnalyticsBtn.UseVisualStyleBackColor = true;
+            AnalyticsBtn.Click += btnAnalytics_Click;
+            // 
+            // btnExportExcel
+            // 
+            btnExportExcel.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExportExcel.Location = new Point(292, 333);
+            btnExportExcel.Name = "btnExportExcel";
+            btnExportExcel.Size = new Size(174, 29);
+            btnExportExcel.TabIndex = 9;
+            btnExportExcel.Text = "Export to Excel";
+            btnExportExcel.UseVisualStyleBackColor = true;
+            btnExportExcel.Click += btnExportExcel_Click;
+            // 
+            // btnExportPdf
+            // 
+            btnExportPdf.Font = new Font("Bookman Old Style", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExportPdf.Location = new Point(477, 333);
+            btnExportPdf.Name = "btnExportPdf";
+            btnExportPdf.Size = new Size(141, 29);
+            btnExportPdf.TabIndex = 10;
+            btnExportPdf.Text = "Export to PDF";
+            btnExportPdf.UseVisualStyleBackColor = true;
+            btnExportPdf.Click += btnExportPdf_Click;
+            // 
             // CustomerListForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(782, 385);
+            Controls.Add(btnExportPdf);
+            Controls.Add(btnExportExcel);
+            Controls.Add(AnalyticsBtn);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);
             Controls.Add(btnLogout);
@@ -205,5 +248,8 @@
         private DataGridViewTextBoxColumn ContactNumber;
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Balance;
+        private Button AnalyticsBtn;
+        private Button btnExportExcel;
+        private Button btnExportPdf;
     }
 }
