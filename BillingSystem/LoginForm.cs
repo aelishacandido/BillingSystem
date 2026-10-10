@@ -30,7 +30,7 @@ namespace BillingSystem
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -59,14 +59,16 @@ namespace BillingSystem
             // Step 1: Make sure both fields are filled 
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                MessageBox.Show("Please enter your username.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter your username.", "Login",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtUsername.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                MessageBox.Show("Please enter your password.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter your password.", "Login",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtPassword.Focus();
                 return;
             }
@@ -80,14 +82,13 @@ namespace BillingSystem
 
                     // Parameterized query — safe from SQL injection 
                     string sql = @"SELECT UserID, FullName, Role 
-                                   FROM   Users 
-                                   WHERE  Username = @Username 
-                                   AND  Password = @Password;";
+                                   FROM Users 
+                                   WHERE Username = @Username 
+                                   AND Password = @Password;";
 
                     using (var cmd = new MySqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@Username", txtUsername.Text.Trim());
-
                         cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
 
                         using (var reader = cmd.ExecuteReader())
@@ -102,12 +103,12 @@ namespace BillingSystem
                             else
                             {
                                 // No match found — wrong credentials 
-                                MessageBox.Show("Invalid username or password.\nPlease try again.",      
+                                MessageBox.Show("Invalid username or password.\nPlease try again.",
                                                 "Login Failed",
                                                 MessageBoxButtons.OK,
                                                 MessageBoxIcon.Error);
-                                                txtPassword.Clear();
-                                                txtPassword.Focus();
+                                txtPassword.Clear();
+                                txtPassword.Focus();
                             }
                         }
                     }
@@ -121,6 +122,11 @@ namespace BillingSystem
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
             }
+        }
+
+        private void txtUsername_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

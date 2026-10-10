@@ -103,7 +103,8 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading monthly revenue chart:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading monthly revenue chart:\n{ex.Message}", "Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -194,7 +195,8 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading Paid/Unpaid chart:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading Paid/Unpaid chart:\n{ex.Message}", "Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -232,7 +234,8 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading Top 5 customers:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading Top 5 customers:\n{ex.Message}", "Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

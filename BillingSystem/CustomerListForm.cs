@@ -73,7 +73,7 @@ namespace BillingSystem
         {
             AddCustomerForm addCustomerForm = new AddCustomerForm();
             addCustomerForm.ShowDialog();
-            LoadCustomers();   // enable this line in Step 4.4 
+            LoadCustomers(); 
         }
 
         private void LoadCustomers()
@@ -121,7 +121,8 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading customers:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading customers:\n{ex.Message}", "Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -194,7 +195,8 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error searching customers:\n{ex.Message}", "Search Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error searching customers:\n{ex.Message}", "Search Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -235,21 +237,24 @@ namespace BillingSystem
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Customer deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("Customer deleted successfully.", "Deleted", 
+                                            MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             LoadCustomers();   // Refresh the grid
                             _selectedCustomerId = 0;   // Clear selection tracker 
                         }
                         else
                         {
-                            MessageBox.Show("Customer could not be deleted. It may no longer exist.", "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Customer could not be deleted. It may no longer exist.", "Delete Failed", 
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error deleting customer:\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error deleting customer:\n{ex.Message}", "Error", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -258,7 +263,8 @@ namespace BillingSystem
             // Step 1: Make sure a customer is selected 
             if (_selectedCustomerId == 0)
             {
-                MessageBox.Show("Please select a customer to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a customer to delete.", "No Selection", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             // Step 2: Confirm before deleting — this cannot be undone 
@@ -287,7 +293,8 @@ namespace BillingSystem
             // Make sure there is something to export 
             if (dataGridView1.Rows.Count == 0)
             {
-                MessageBox.Show("There are no records to export.", "Export to Excel", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("There are no records to export.", "Export to Excel", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -328,11 +335,13 @@ namespace BillingSystem
                         workbook.SaveAs(saveDialog.FileName);
                     }
 
-                    MessageBox.Show("Customer list exported successfully to Excel.", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Customer list exported successfully to Excel.", "Export Complete", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error exporting to Excel:\n{ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error exporting to Excel:\n{ex.Message}", "Export Error", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -341,7 +350,8 @@ namespace BillingSystem
             // Make sure there is something to export 
             if (dataGridView1.Rows.Count == 0)
             {
-                MessageBox.Show("There are no records to export.", "Export to PDF", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("There are no records to export.", "Export to PDF", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -421,11 +431,13 @@ namespace BillingSystem
                         document.Save(saveDialog.FileName);
                     }
 
-                    MessageBox.Show("Customer list exported successfully to PDF.", "Export Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Customer list exported successfully to PDF.", "Export Complete", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error exporting to PDF:\n{ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error exporting to PDF:\n{ex.Message}", "Export Error", 
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

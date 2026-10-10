@@ -69,7 +69,7 @@
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(755, 193);
+            dataGridView1.Size = new Size(755, 231);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellDoubleClick += dgvCustomers_CellDoubleClick;
@@ -126,7 +126,7 @@
             // btnAdd
             // 
             btnAdd.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAdd.Location = new Point(200, 295);
+            btnAdd.Location = new Point(200, 309);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(122, 29);
             btnAdd.TabIndex = 2;
@@ -137,7 +137,7 @@
             // btnDelete
             // 
             btnDelete.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDelete.Location = new Point(456, 295);
+            btnDelete.Location = new Point(456, 309);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(121, 29);
             btnDelete.TabIndex = 3;
@@ -148,7 +148,7 @@
             // btnLogout
             // 
             btnLogout.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLogout.Location = new Point(328, 295);
+            btnLogout.Location = new Point(328, 309);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(122, 29);
             btnLogout.TabIndex = 4;
@@ -178,9 +178,9 @@
             // AnalyticsBtn
             // 
             AnalyticsBtn.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            AnalyticsBtn.Location = new Point(104, 330);
+            AnalyticsBtn.Location = new Point(143, 343);
             AnalyticsBtn.Name = "AnalyticsBtn";
-            AnalyticsBtn.Size = new Size(166, 32);
+            AnalyticsBtn.Size = new Size(141, 29);
             AnalyticsBtn.TabIndex = 8;
             AnalyticsBtn.Text = "Analytics";
             AnalyticsBtn.UseVisualStyleBackColor = true;
@@ -189,7 +189,7 @@
             // btnExportExcel
             // 
             btnExportExcel.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportExcel.Location = new Point(292, 333);
+            btnExportExcel.Location = new Point(292, 343);
             btnExportExcel.Name = "btnExportExcel";
             btnExportExcel.Size = new Size(174, 29);
             btnExportExcel.TabIndex = 9;
@@ -200,7 +200,7 @@
             // btnExportPdf
             // 
             btnExportPdf.Font = new Font("Bookman Old Style", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportPdf.Location = new Point(477, 333);
+            btnExportPdf.Location = new Point(474, 343);
             btnExportPdf.Name = "btnExportPdf";
             btnExportPdf.Size = new Size(141, 29);
             btnExportPdf.TabIndex = 10;
