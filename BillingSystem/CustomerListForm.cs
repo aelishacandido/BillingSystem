@@ -1,17 +1,21 @@
 ﻿using BillingSystem.Database;
+using BillingSystem.Utils;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Utilities;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using ClosedXML.Excel;
-using System.IO;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
+using Color = System.Drawing.Color;
+using Font = System.Drawing.Font;
 
 namespace BillingSystem
 {
@@ -39,12 +43,98 @@ namespace BillingSystem
             if (idCell != null && int.TryParse(idCell.ToString(), out int id))
             {
                 _selectedCustomerId = id;
+
             }
         }
+        private bool _canEdit = true;
+        private void ApplyPermissions()
+        {
+            try
+            {
+                using (var conn = DatabaseConnection.GetConnection())
+                {
+                    conn.Open();
+                    string sql = @"SELECT PermissionName, IsAllowed 
+                           FROM   UserPermissions 
+                           WHERE  Role = @Role;";
+
+                    using (var cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Role", AppSession.CurrentRole);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string permName = reader.GetString("PermissionName");
+                                bool isAllowed = reader.GetBoolean("IsAllowed");
+
+                                switch (permName)
+                                {
+                                    case "AddCustomer":
+                                        btnAdd.Enabled = isAllowed; break;
+                                    case "EditCustomer":
+                                        _canEdit = isAllowed;
+                                        break;
+                                    case "DeleteCustomer":
+                                        btnDelete.Enabled = isAllowed; break;
+                                    case "Analytics":
+                                        btnAnalytics.Enabled = isAllowed; break;
+                                    case "ExportExcel":
+                                        btnExportExcel.Enabled = isAllowed; break;
+                                    case "ExportPdf":
+                                        btnExportPdf.Enabled = isAllowed; break;
+                                    case "AuditLogs":
+                                        btnAuditLog.Enabled = isAllowed; break;
+                                    case "ManagePermissions":
+                                        btnManagePermissions.Enabled = isAllowed;
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading permissions:\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void InitStatusStrip()
+        {
+            lblStatusUser.Text = $"User: {AppSession.CurrentFullName}  |  Role: {AppSession.CurrentRole}";
+            UpdateClock();
+
+            lblStatusTime.ForeColor = Color.Red;
+            lblStatusTime.BackColor = Color.Yellow;
+            lblStatusTime.Visible = true;
+        }
+
+        private void UpdateClock()
+        {
+            lblStatusUser.Text = $"User: {AppSession.CurrentFullName}  |  Role: {AppSession.CurrentRole}  |  {DateTime.Now:dddd, MMMM dd yyyy hh:mm:ss tt}";
+        }
+        private void lblStatusTime_Click(object sender, EventArgs e)
+        {
+            UpdateClock();
+        }
+        private void statusTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateClock();
+        }
+
         private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             // e.RowIndex is -1 when the header row is double-clicked — ignore it 
             if (e.RowIndex < 0) return;
+
+            if (!_canEdit)
+            {
+                MessageBox.Show("You don't have permission to edit customers.", "Access Denied",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             OpenEditForm();
         }
@@ -73,7 +163,13 @@ namespace BillingSystem
         {
             AddCustomerForm addCustomerForm = new AddCustomerForm();
             addCustomerForm.ShowDialog();
-            LoadCustomers(); 
+            LoadCustomers();
+        }
+
+        private void btnManagePermissions_Click(object sender, EventArgs e)
+        {
+            frmManagePermissions permForm = new frmManagePermissions();
+            permForm.ShowDialog(this);
         }
 
         private void LoadCustomers()
@@ -113,6 +209,7 @@ namespace BillingSystem
                             dataGridView1.Columns["ContactNumber"].HeaderText = "Contact No.";
                             dataGridView1.Columns["Email"].HeaderText = "Email";
                             dataGridView1.Columns["Balance"].HeaderText = "Balance (₱)";
+                            dataGridView1.Columns["Status"].HeaderText = "Status";
                         }
 
                         lblTitle.Text = $"Customer List  ({dt.Rows.Count} record(s))";
@@ -121,7 +218,7 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading customers:\n{ex.Message}", "Error", 
+                MessageBox.Show($"Error loading customers:\n{ex.Message}", "Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -140,10 +237,14 @@ namespace BillingSystem
             dataGridView1.Columns["ContactNumber"].DataPropertyName = "ContactNumber";
             dataGridView1.Columns["Email"].DataPropertyName = "Email";
             dataGridView1.Columns["Balance"].DataPropertyName = "Balance";
+            dataGridView1.Columns["Status"].DataPropertyName = "Status";
         }
         private void CustomerListForm_Load(object sender, EventArgs e)
         {
+            ApplyTheme();
             LoadCustomers();
+            ApplyPermissions();
+            InitStatusStrip();
         }
 
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
@@ -195,7 +296,7 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error searching customers:\n{ex.Message}", "Search Error", 
+                MessageBox.Show($"Error searching customers:\n{ex.Message}", "Search Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -237,15 +338,17 @@ namespace BillingSystem
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Customer deleted successfully.", "Deleted", 
+                            MessageBox.Show("Customer deleted successfully.", "Deleted",
                                             MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             LoadCustomers();   // Refresh the grid
                             _selectedCustomerId = 0;   // Clear selection tracker 
+
+                            AuditLogger.Log("DELETE_CUSTOMER", $"Customer ID {customerId} deleted by {AppSession.CurrentUsername}.");
                         }
                         else
                         {
-                            MessageBox.Show("Customer could not be deleted. It may no longer exist.", "Delete Failed", 
+                            MessageBox.Show("Customer could not be deleted. It may no longer exist.", "Delete Failed",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
@@ -253,7 +356,7 @@ namespace BillingSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error deleting customer:\n{ex.Message}", "Error", 
+                MessageBox.Show($"Error deleting customer:\n{ex.Message}", "Error",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -263,7 +366,7 @@ namespace BillingSystem
             // Step 1: Make sure a customer is selected 
             if (_selectedCustomerId == 0)
             {
-                MessageBox.Show("Please select a customer to delete.", "No Selection", 
+                MessageBox.Show("Please select a customer to delete.", "No Selection",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -285,6 +388,7 @@ namespace BillingSystem
         private void btnAnalytics_Click(object sender, EventArgs e)
         {
             frmAnalytics analytics = new frmAnalytics();
+            AuditLogger.Log("VIEW_ANALYTICS", $"{AppSession.CurrentUsername} opened the Analytics Dashboard.");
             analytics.ShowDialog();
         }
 
@@ -293,7 +397,7 @@ namespace BillingSystem
             // Make sure there is something to export 
             if (dataGridView1.Rows.Count == 0)
             {
-                MessageBox.Show("There are no records to export.", "Export to Excel", 
+                MessageBox.Show("There are no records to export.", "Export to Excel",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -335,12 +439,14 @@ namespace BillingSystem
                         workbook.SaveAs(saveDialog.FileName);
                     }
 
-                    MessageBox.Show("Customer list exported successfully to Excel.", "Export Complete", 
+                    MessageBox.Show("Customer list exported successfully to Excel.", "Export Complete",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    AuditLogger.Log("EXPORT_EXCEL", $"{AppSession.CurrentUsername} exported customer list to Excel.");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error exporting to Excel:\n{ex.Message}", "Export Error", 
+                    MessageBox.Show($"Error exporting to Excel:\n{ex.Message}", "Export Error",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -350,7 +456,7 @@ namespace BillingSystem
             // Make sure there is something to export 
             if (dataGridView1.Rows.Count == 0)
             {
-                MessageBox.Show("There are no records to export.", "Export to PDF", 
+                MessageBox.Show("There are no records to export.", "Export to PDF",
                                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -431,14 +537,84 @@ namespace BillingSystem
                         document.Save(saveDialog.FileName);
                     }
 
-                    MessageBox.Show("Customer list exported successfully to PDF.", "Export Complete", 
+                    MessageBox.Show("Customer list exported successfully to PDF.", "Export Complete",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    AuditLogger.Log("EXPORT_PDF", $"{AppSession.CurrentUsername} exported customer list to PDF.");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error exporting to PDF:\n{ex.Message}", "Export Error", 
+                    MessageBox.Show($"Error exporting to PDF:\n{ex.Message}", "Export Error",
                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+        private void ApplyTheme()
+        {
+            // Form background 
+            this.BackColor = AppTheme.BackgroundColor;
+
+            // Action buttons 
+            btnAdd.BackColor = AppTheme.SuccessColor;
+            btnAdd.ForeColor = Color.White;
+            btnDelete.BackColor = AppTheme.DangerColor;
+            btnDelete.ForeColor = Color.White;
+            btnAnalytics.BackColor = AppTheme.PrimaryColor;
+            btnAnalytics.ForeColor = Color.White;
+            btnExportExcel.BackColor = AppTheme.SecondaryColor;
+            btnExportExcel.ForeColor = Color.White;
+            btnExportPdf.BackColor = AppTheme.SecondaryColor;
+            btnExportPdf.ForeColor = Color.White;
+            btnAuditLog.BackColor = AppTheme.SecondaryColor;
+            btnAuditLog.ForeColor = Color.White;
+            btnManagePermissions.BackColor = AppTheme.DangerColor;
+            btnManagePermissions.ForeColor = Color.White;
+            btnLogout.BackColor = AppTheme.SecondaryColor;
+            btnLogout.ForeColor = Color.White;
+
+            // DataGridView header colors 
+            dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = AppTheme.PrimaryColor;
+            dataGridView1.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridView1.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+
+            // Alternating row colors 
+            dataGridView1.AlternatingRowsDefaultCellStyle.BackColor = AppTheme.GridRowAlt;
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            AuditLogger.Log("LOGOUT", $"{AppSession.CurrentFullName} ({AppSession.CurrentRole}) logged out.");
+            AppSession.Clear();
+
+            Application.Restart();
+        }
+
+        private void btnAuditLog_Click(object sender, EventArgs e)
+        {
+            frmAuditLogs auditForm = new frmAuditLogs();
+            auditForm.ShowDialog(this);
+        }
+
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // Skip the header row 
+            if (e.RowIndex < 0) return;
+
+            // Read Status from the data behind this row (the DataTable from LoadCustomers) 
+            var rowData = dataGridView1.Rows[e.RowIndex].DataBoundItem as DataRowView;
+            string status = rowData?["Status"]?.ToString() ?? "";
+
+            if (status == "Inactive")
+            {
+                // The whole row turns light red 
+                e.CellStyle.BackColor = AppTheme.InactiveRowColor;
+            }
+            else if (status == "Active" &&
+                     dataGridView1.Columns[e.ColumnIndex].DataPropertyName == "Status")
+            {
+                // Only the Status cell turns light green, so the 
+                // alternating row colors stay visible 
+                e.CellStyle.BackColor = AppTheme.ActiveRowColor;
             }
         }
     }

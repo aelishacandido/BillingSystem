@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using BillingSystem.Utils;
 
 namespace BillingSystem
 {
@@ -93,23 +94,24 @@ namespace BillingSystem
 
                         using (var reader = cmd.ExecuteReader())
                         {
-                            if (reader.Read())
-                            {
-                                // Credentials matched — open the Customer List form 
+                            if(reader.Read())
+{
+                                // Populate AppSession with the logged-in user's details 
+                                AppSession.CurrentUserID = reader.GetInt32("UserID");
+                                AppSession.CurrentUsername = txtUsername.Text.Trim();
+                                AppSession.CurrentFullName = reader.GetString("FullName");
+                                AppSession.CurrentRole = reader.GetString("Role");
+
+                                // Write a LOGIN audit log entry 
+                                AuditLogger.Log("LOGIN",
+                                    $"{AppSession.CurrentFullName} ({AppSession.CurrentRole}) logged in."); 
+                            
+                                // Open the Customer List Form 
                                 CustomerListForm listForm = new CustomerListForm();
                                 listForm.Show();
                                 this.Hide();
                             }
-                            else
-                            {
-                                // No match found — wrong credentials 
-                                MessageBox.Show("Invalid username or password.\nPlease try again.",
-                                                "Login Failed",
-                                                MessageBoxButtons.OK,
-                                                MessageBoxIcon.Error);
-                                txtPassword.Clear();
-                                txtPassword.Focus();
-                            }
+
                         }
                     }
                 }
