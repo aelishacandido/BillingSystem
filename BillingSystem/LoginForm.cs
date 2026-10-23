@@ -111,7 +111,17 @@ namespace BillingSystem
                                 listForm.Show();
                                 this.Hide();
                             }
+                            else
+                            {
+                                MessageBox.Show(
+                                    "Invalid username or password.",
+                                    "Login Failed",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
 
+                                txtPassword.Clear();
+                                txtUsername.Focus();
+                            }
                         }
                     }
                 }
