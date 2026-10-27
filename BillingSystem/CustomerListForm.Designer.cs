@@ -52,6 +52,7 @@
             lblStatusUser = new ToolStripStatusLabel();
             lblStatusTime = new ToolStripStatusLabel();
             statusTimer = new System.Windows.Forms.Timer(components);
+            btnChangePassword = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -78,7 +79,7 @@
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(755, 259);
+            dataGridView1.Size = new Size(755, 246);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellDoubleClick += dgvCustomers_CellDoubleClick;
@@ -242,7 +243,7 @@
             // btnManagePermissions
             // 
             btnManagePermissions.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnManagePermissions.Location = new Point(298, 326);
+            btnManagePermissions.Location = new Point(225, 326);
             btnManagePermissions.Name = "btnManagePermissions";
             btnManagePermissions.Size = new Size(180, 29);
             btnManagePermissions.TabIndex = 12;
@@ -263,7 +264,7 @@
             // lblStatusUser
             // 
             lblStatusUser.Name = "lblStatusUser";
-            lblStatusUser.Size = new Size(492, 20);
+            lblStatusUser.Size = new Size(531, 20);
             lblStatusUser.Spring = true;
             lblStatusUser.Text = "User: | Role:";
             lblStatusUser.TextAlign = ContentAlignment.MiddleLeft;
@@ -282,11 +283,23 @@
             statusTimer.Interval = 1000;
             statusTimer.Tick += statusTimer_Tick;
             // 
+            // btnChangePassword
+            // 
+            btnChangePassword.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnChangePassword.Location = new Point(411, 326);
+            btnChangePassword.Name = "btnChangePassword";
+            btnChangePassword.Size = new Size(145, 29);
+            btnChangePassword.TabIndex = 14;
+            btnChangePassword.Text = "Change Password";
+            btnChangePassword.UseVisualStyleBackColor = true;
+            btnChangePassword.Click += btnChangePassword_Click;
+            // 
             // CustomerListForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(782, 460);
+            Controls.Add(btnChangePassword);
             Controls.Add(statusStrip1);
             Controls.Add(btnManagePermissions);
             Controls.Add(btnAuditLog);
@@ -337,5 +350,6 @@
         private DataGridViewTextBoxColumn Email;
         private DataGridViewTextBoxColumn Balance;
         private DataGridViewTextBoxColumn Status;
+        private Button btnChangePassword;
     }
 }

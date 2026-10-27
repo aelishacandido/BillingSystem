@@ -571,6 +571,8 @@ namespace BillingSystem
             btnManagePermissions.ForeColor = Color.White;
             btnLogout.BackColor = AppTheme.SecondaryColor;
             btnLogout.ForeColor = Color.White;
+            btnChangePassword.BackColor = AppTheme.DangerColor;
+            btnChangePassword.ForeColor = Color.White;
 
             // DataGridView header colors 
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = AppTheme.PrimaryColor;
@@ -616,6 +618,12 @@ namespace BillingSystem
                 // alternating row colors stay visible 
                 e.CellStyle.BackColor = AppTheme.ActiveRowColor;
             }
+        }
+
+        private void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            frmChangePassword changePasswordForm = new frmChangePassword(AppSession.CurrentUserID);
+            changePasswordForm.ShowDialog(this);
         }
     }
 }
