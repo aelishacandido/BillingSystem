@@ -189,7 +189,7 @@ namespace BillingSystem
                                           Balance, 
                                           Status 
                                    FROM   Customers 
-                                   ORDER  BY FullName ASC;";
+                                   ORDER  BY CustomerID ASC;";
 
                     using (var adapter = new MySqlDataAdapter(sql, conn))
                     {
@@ -275,7 +275,7 @@ namespace BillingSystem
                                    WHERE  FullName      LIKE @keyword 
                                       OR  Address       LIKE @keyword 
                                       OR  ContactNumber LIKE @keyword 
-                                   ORDER  BY FullName ASC;";
+                                   ORDER  BY CustomerID ASC;";
 
                     using (var cmd = new MySqlCommand(sql, conn))
                     {
@@ -573,6 +573,8 @@ namespace BillingSystem
             btnLogout.ForeColor = Color.White;
             btnChangePassword.BackColor = AppTheme.DangerColor;
             btnChangePassword.ForeColor = Color.White;
+            btnViewBilling.BackColor = AppTheme.SecondaryColor;
+            btnViewBilling.ForeColor = Color.White;
 
             // DataGridView header colors 
             dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = AppTheme.PrimaryColor;
@@ -624,6 +626,27 @@ namespace BillingSystem
         {
             frmChangePassword changePasswordForm = new frmChangePassword(AppSession.CurrentUserID);
             changePasswordForm.ShowDialog(this);
+        }
+
+        private void btnViewBilling_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show(
+                    "Please select a customer first.",
+                    "No Customer Selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
+            int customerId = Convert.ToInt32(
+                dataGridView1.SelectedRows[0].Cells["CustomerID"].Value);
+
+            frmBillingHistory billingForm = new frmBillingHistory(customerId);
+
+            billingForm.ShowDialog();
         }
     }
 }

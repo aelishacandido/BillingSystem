@@ -53,8 +53,11 @@
             lblStatusTime = new ToolStripStatusLabel();
             statusTimer = new System.Windows.Forms.Timer(components);
             btnChangePassword = new Button();
+            panel1 = new Panel();
+            btnViewBilling = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             statusStrip1.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // lblTitle
@@ -74,12 +77,12 @@
             dataGridView1.BorderStyle = BorderStyle.None;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { CustomerID, FullName, Address, ContactNumber, Email, Balance, Status });
-            dataGridView1.Location = new Point(15, 61);
+            dataGridView1.Location = new Point(15, 56);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(755, 246);
+            dataGridView1.Size = new Size(755, 283);
             dataGridView1.TabIndex = 1;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             dataGridView1.CellDoubleClick += dgvCustomers_CellDoubleClick;
@@ -199,9 +202,9 @@
             // btnAnalytics
             // 
             btnAnalytics.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAnalytics.Location = new Point(104, 395);
+            btnAnalytics.Location = new Point(48, 22);
             btnAnalytics.Name = "btnAnalytics";
-            btnAnalytics.Size = new Size(141, 29);
+            btnAnalytics.Size = new Size(145, 29);
             btnAnalytics.TabIndex = 8;
             btnAnalytics.Text = "Analytics";
             btnAnalytics.UseVisualStyleBackColor = true;
@@ -210,9 +213,9 @@
             // btnExportExcel
             // 
             btnExportExcel.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportExcel.Location = new Point(251, 395);
+            btnExportExcel.Location = new Point(48, 92);
             btnExportExcel.Name = "btnExportExcel";
-            btnExportExcel.Size = new Size(174, 29);
+            btnExportExcel.Size = new Size(145, 29);
             btnExportExcel.TabIndex = 9;
             btnExportExcel.Text = "Export to Excel";
             btnExportExcel.UseVisualStyleBackColor = true;
@@ -221,9 +224,9 @@
             // btnExportPdf
             // 
             btnExportPdf.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportPdf.Location = new Point(436, 396);
+            btnExportPdf.Location = new Point(48, 127);
             btnExportPdf.Name = "btnExportPdf";
-            btnExportPdf.Size = new Size(141, 29);
+            btnExportPdf.Size = new Size(145, 29);
             btnExportPdf.TabIndex = 10;
             btnExportPdf.Text = "Export to PDF";
             btnExportPdf.UseVisualStyleBackColor = true;
@@ -232,9 +235,9 @@
             // btnAuditLog
             // 
             btnAuditLog.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAuditLog.Location = new Point(583, 396);
+            btnAuditLog.Location = new Point(48, 57);
             btnAuditLog.Name = "btnAuditLog";
-            btnAuditLog.Size = new Size(114, 29);
+            btnAuditLog.Size = new Size(145, 29);
             btnAuditLog.TabIndex = 11;
             btnAuditLog.Text = "Audit Log";
             btnAuditLog.UseVisualStyleBackColor = true;
@@ -243,9 +246,9 @@
             // btnManagePermissions
             // 
             btnManagePermissions.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnManagePermissions.Location = new Point(225, 326);
+            btnManagePermissions.Location = new Point(48, 300);
             btnManagePermissions.Name = "btnManagePermissions";
-            btnManagePermissions.Size = new Size(180, 29);
+            btnManagePermissions.Size = new Size(163, 29);
             btnManagePermissions.TabIndex = 12;
             btnManagePermissions.Text = "Manage Permissions";
             btnManagePermissions.UseVisualStyleBackColor = true;
@@ -257,14 +260,14 @@
             statusStrip1.Items.AddRange(new ToolStripItem[] { lblStatusUser, lblStatusTime });
             statusStrip1.Location = new Point(0, 434);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(782, 26);
+            statusStrip1.Size = new Size(1051, 26);
             statusStrip1.TabIndex = 13;
             statusStrip1.Text = "statusStrip1";
             // 
             // lblStatusUser
             // 
             lblStatusUser.Name = "lblStatusUser";
-            lblStatusUser.Size = new Size(531, 20);
+            lblStatusUser.Size = new Size(800, 20);
             lblStatusUser.Spring = true;
             lblStatusUser.Text = "User: | Role:";
             lblStatusUser.TextAlign = ContentAlignment.MiddleLeft;
@@ -286,26 +289,48 @@
             // btnChangePassword
             // 
             btnChangePassword.Font = new Font("Baskerville Old Face", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnChangePassword.Location = new Point(411, 326);
+            btnChangePassword.Location = new Point(48, 335);
             btnChangePassword.Name = "btnChangePassword";
-            btnChangePassword.Size = new Size(145, 29);
+            btnChangePassword.Size = new Size(163, 29);
             btnChangePassword.TabIndex = 14;
             btnChangePassword.Text = "Change Password";
             btnChangePassword.UseVisualStyleBackColor = true;
             btnChangePassword.Click += btnChangePassword_Click;
             // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.Control;
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Controls.Add(btnViewBilling);
+            panel1.Controls.Add(btnChangePassword);
+            panel1.Controls.Add(btnManagePermissions);
+            panel1.Controls.Add(btnAuditLog);
+            panel1.Controls.Add(btnExportPdf);
+            panel1.Controls.Add(btnExportExcel);
+            panel1.Controls.Add(btnAnalytics);
+            panel1.Location = new Point(803, 24);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(236, 387);
+            panel1.TabIndex = 15;
+            // 
+            // btnViewBilling
+            // 
+            btnViewBilling.Font = new Font("Baskerville Old Face", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnViewBilling.Location = new Point(48, 162);
+            btnViewBilling.Name = "btnViewBilling";
+            btnViewBilling.Size = new Size(145, 29);
+            btnViewBilling.TabIndex = 15;
+            btnViewBilling.Text = "View Billing";
+            btnViewBilling.UseVisualStyleBackColor = true;
+            btnViewBilling.Click += btnViewBilling_Click;
+            // 
             // CustomerListForm
             // 
             AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(782, 460);
-            Controls.Add(btnChangePassword);
+            ClientSize = new Size(1051, 460);
+            Controls.Add(panel1);
             Controls.Add(statusStrip1);
-            Controls.Add(btnManagePermissions);
-            Controls.Add(btnAuditLog);
-            Controls.Add(btnExportPdf);
-            Controls.Add(btnExportExcel);
-            Controls.Add(btnAnalytics);
             Controls.Add(btnSearch);
             Controls.Add(txtSearch);
             Controls.Add(btnLogout);
@@ -321,6 +346,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -351,5 +377,7 @@
         private DataGridViewTextBoxColumn Balance;
         private DataGridViewTextBoxColumn Status;
         private Button btnChangePassword;
+        private Panel panel1;
+        private Button btnViewBilling;
     }
 }
