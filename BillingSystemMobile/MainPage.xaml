@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="BillingSystemMobile.MainPage" 
+             Title="Billing Entry">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+
+            <!-- Page Title -->
+            <Label Text="New Billing Record" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   HorizontalOptions="Center" 
+                   TextColor="#1F4E79" 
+                   Margin="0,10,0,10"/>
+
+            <!-- Customer Picker -->
+            <Label Text="Customer" FontAttributes="Bold" FontSize="14"/>
+            <Picker x:Name="pickerCustomer" 
+                    Title="Select a Customer" 
+                    FontSize="14">
+                <Picker.Items>
+                    <x:String>Juan Dela Cruz</x:String>
+                    <x:String>Maria Santos</x:String>
+                    <x:String>Pedro Reyes</x:String>
+                    <x:String>Ana Lopez</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <!-- Billing Month -->
+            <Label Text="Billing Month" FontAttributes="Bold" FontSize="14"/>
+            <Entry x:Name="entryBillingMonth" 
+                   Placeholder="e.g. July 2026" 
+                   FontSize="14"/>
+
+            <!-- Previous Reading -->
+            <Label Text="Previous Reading (cu.m)" FontAttributes="Bold" FontSize="14"/>
+            <Entry x:Name="entryPreviousReading" 
+                   Placeholder="0" 
+                   Keyboard="Numeric" 
+                   FontSize="14" 
+                   TextChanged="OnReadingChanged"/>
+
+            <!-- Present Reading -->
+            <Label Text="Present Reading (cu.m)" FontAttributes="Bold" FontSize="14"/>
+            <Entry x:Name="entryPresentReading" 
+                   Placeholder="0" 
+                   Keyboard="Numeric" 
+                   FontSize="14" 
+                   TextChanged="OnReadingChanged"/>
+
+            <!-- Rate Per Cubic -->
+            <Label Text="Rate Per Cubic (₱)" FontAttributes="Bold" FontSize="14"/>
+            <Entry x:Name="entryRate" 
+                   Text="18.50" 
+                   Keyboard="Numeric" 
+                   FontSize="14" 
+                   TextChanged="OnReadingChanged"/>
+
+            <!-- Computed Total Amount -->
+            <Label Text="Total Amount (₱)" FontAttributes="Bold" FontSize="14"/>
+            <Entry x:Name="entryTotalAmount" 
+                   Placeholder="0.00" 
+                   IsReadOnly="True" 
+                   FontSize="14" 
+                   BackgroundColor="#F0F0F0" 
+                   FontAttributes="Bold" 
+                   TextColor="#1F4E79"/>
+
+            <!-- Save Button -->
+            <Button x:Name="btnSaveBill" 
+                    Text="Save Bill" 
+                    BackgroundColor="#2E75B6" 
+                    TextColor="White" 
+                    FontSize="16" 
+                    FontAttributes="Bold" 
+                    Margin="0,10,0,0" 
+                    Clicked="OnSaveBillClicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
