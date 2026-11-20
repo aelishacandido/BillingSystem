@@ -2,7 +2,7 @@
 
 A C\# Billing System project developed for **CS 106 – Application Development & Emerging Technologies** at **Bicol University – College of Science, Computer Science Department**.
 
-The project demonstrates the development of a billing management system through multiple laboratory activities, progressing from a Windows Forms desktop application to a mobile application using .NET MAUI.
+The desktop application connects directly to a MySQL database, while the mobile application communicates through an ASP.NET Core Web API, allowing customer data retrieval and billing record submission from a .NET MAUI application.
 
 ---
 
@@ -80,6 +80,36 @@ The mobile version of the Billing System is being developed using .NET MAUI and 
     - XAML
     - Visual Studio 2026
 
+---
+
+## Web API Integration (ASP.NET Core)
+
+The Billing System now includes an ASP.NET Core Web API that acts as a middle layer between the .NET MAUI mobile application and the MySQL BillingDB database.
+
+### Implemented Features
+
+    - BillingSystemAPI ASP.NET Core Web API project
+    - MySQL database connectivity using MySql.Data
+    - GET /api/customer endpoint for retrieving active customers
+    - POST /api/billing endpoint for saving billing records
+    - Customer and BillingRecord API models
+    - JSON serialization and deserialization
+    - CORS configuration for MAUI application access
+    - Swagger UI integration for API testing
+    - Configuration-based connection string using appsettings.json
+    - End-to-end communication between MAUI and MySQL through REST API
+
+### Technologies Used
+
+    - ASP.NET Core Web API
+    - .NET 10
+    - C#
+    - MySQL
+    - MySql.Data
+    - Swagger (Swashbuckle.AspNetCore)
+    - HttpClient
+    - Visual Studio 2026
+    
 ---
 
 ## Repository
